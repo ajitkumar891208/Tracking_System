@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tracking System - Factory Pattern</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f6f9;
+    }
+    h1 {
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tracking System (Factory Design Pattern)</h1>
+
+  <div class="card">
+    <label for="trackerType">Choose a tracking type:</label><br>
+    <select id="trackerType">
+      <option value="package">Package Tracking</option>
+      <option value="vehicle">Vehicle Tracking</option>
+      <option value="employee">Employee Tracking</option>
+    </select><br>
+    <button onclick="createTracker()">Create Tracker</button>
+  </div>
+
+  <div class="card" id="output"></div>
+
+  <script>
+    // Base Tracker
+    class Tracker {
+      constructor(type) {
+        this.type = type;
+      }
+      getInfo() {
+        return `Generic tracker for ${this.type}`;
+      }
+    }
+
+    // Concrete Products
+    class PackageTracker extends Tracker {
+      getInfo() {
+        return "Tracking a PACKAGE: Shows delivery status, expected time, and location.";
+      }
+    }
+
+    class VehicleTracker extends Tracker {
+      getInfo() {
+        return "Tracking a VEHICLE: Shows live GPS, speed, and route details.";
+      }
+    }
+
+    class EmployeeTracker extends Tracker {
+      getInfo() {
+        return "Tracking an EMPLOYEE: Shows attendance, work location, and schedule.";
+      }
+    }
+
+    // Factory
+    class TrackerFactory {
+      static createTracker(type) {
+        switch(type) {
+          case "package": return new PackageTracker(type);
+          case "vehicle": return new VehicleTracker(type);
+          case "employee": return new EmployeeTracker(type);
+          default: return new Tracker(type);
+        }
+      }
+    }
+
+    // Client Code
+    function createTracker() {
+      const type = document.getElementById("trackerType").value;
+      const tracker = TrackerFactory.createTracker(type);
+      document.getElementById("output").innerHTML = `<h3>Result:</h3><p>${tracker.getInfo()}</p>`;
+    }
+  </script>
+</body>
+</html>
